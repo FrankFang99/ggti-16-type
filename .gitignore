@@ -1,0 +1,27 @@
+# mavis session / plans / scratchpad —— 跟工程交付无关
+.mavis/
+.mavis/**
+
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# 临时 / 备份
+*.tmp
+*.bak
+*.swp
+*~
+Thumbs.db
+.DS_Store
+
+# 编辑器
+.vscode/
+.idea/
+*.iml
+
+# 本地 scratch 文件（不污染仓库）
+scratch.md
+scratchpad.md

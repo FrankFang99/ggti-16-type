@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>股格测试 (GGTI) 16 型人格参考页</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(135deg, #f6f8fb 0%, #e8edf3 100%);
+    color: #2d3748;
+    line-height: 1.6;
+    padding: 24px 16px 80px;
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .hero {
+    text-align: center;
+    padding: 32px 16px 24px;
+  }
+  .hero h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1a202c;
+    margin-bottom: 8px;
+  }
+  .hero .sub {
+    font-size: 15px;
+    color: #718096;
+    margin-bottom: 16px;
+  }
+  .dims {
+    display: inline-flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 12px;
+  }
+  .dim-tag {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: #4a5568;
+    font-weight: 500;
+  }
+  .dim-tag b { color: #2b6cb0; font-weight: 700; }
+
+  .polar-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 24px 0 32px;
+  }
+  .polar-card {
+    background: white;
+    border-radius: 12px;
+    padding: 14px 18px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .polar-card .label {
+    font-size: 12px;
+    color: #718096;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .polar-card .pair {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2d3748;
+  }
+  .polar-card .pair .a { color: #2b6cb0; }
+  .polar-card .pair .b { color: #c05621; }
+  .polar-card .en {
+    font-size: 11px;
+    color: #a0aec0;
+    margin-top: 4px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .card {
+    background: white;
+    border-radius: 14px;
+    padding: 18px 18px 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border: 1px solid #edf2f7;
+    transition: transform 0.15s, box-shadow 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--accent, #2b6cb0);
+  }
+  .card .code {
+    display: inline-block;
+    background: #edf2f7;
+    color: #2b6cb0;
+    font-family: "SF Mono", Monaco, monospace;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  .card .name {
+    font-size: 19px;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 6px;
+  }
+  .card .portrait {
+    font-size: 13px;
+    color: #4a5568;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    min-height: 38px;
+  }
+  .card .section-title {
+    font-size: 11px;
+    color: #718096;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 10px;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .card ul {
+    list-style: none;
+    margin-bottom: 8px;
+  }
+  .card ul li {
+    font-size: 12px;
+    color: #4a5568;
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 3px;
+  }
+  .card ul li::before {
+    content: "·";
+    position: absolute;
+    left: 4px;
+    color: #cbd5e0;
+    font-weight: 700;
+  }
+  .card .tool {
+    font-size: 12px;
+    color: #2d3748;
+    margin-bottom: 3px;
+  }
+  .card .tool b { color: #2b6cb0; font-weight: 600; }
+  .card .tool .desc { color: #718096; font-size: 11px; }
+  .card .strategy {
+    font-size: 12px;
+    color: #c05621;
+    background: #fffaf0;
+    border-left: 2px solid #ed8936;
+    padding: 6px 10px;
+    border-radius: 4px;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+  .card .hook {
+    font-size: 11px;
+    color: #2c5282;
+    background: #ebf8ff;
+    border-left: 2px solid #3182ce;
+    padding: 6px 10px;
+    border-radius: 4px;
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+  .card .hook .lbl { font-weight: 700; color: #2b6cb0; }
+  .card .hook .ai { color: #2d3748; }
+  .card .hook .crs { color: #2c5282; font-weight: 600; }
+
+  .group-label {
+    grid-column: 1 / -1;
+    font-size: 14px;
+    font-weight: 700;
+    color: #4a5568;
+    margin-top: 16px;
+    padding-left: 4px;
+    border-left: 3px solid #2b6cb0;
+    padding: 4px 10px;
+    background: white;
+    border-radius: 0 6px 6px 0;
+  }
+  .group-label .meta {
+    font-size: 11px;
+    color: #a0aec0;
+    font-weight: 400;
+    margin-left: 8px;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 48px;
+    color: #a0aec0;
+    font-size: 12px;
+  }
+  .footer a { color: #718096; text-decoration: none; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .card { break-inside: avoid; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero">
+    <h1>股格测试 (GGTI) 16 型人格</h1>
+    <div class="sub">一图速查 · 4 维对极 × 16 型组合</div>
+    <div class="dims">
+      <span class="dim-tag"><b>V/M</b> 决策依据</span>
+      <span class="dim-tag"><b>L/S</b> 持仓周期</span>
+      <span class="dim-tag"><b>I/F</b> 决策方式</span>
+      <span class="dim-tag"><b>A/C</b> 风险态度</span>
+    </div>
+  </div>
+
+  <div class="polar-grid">
+    <div class="polar-card">
+      <div class="label">第 1 维 决策依据</div>
+      <div class="pair"><span class="a">V 价值</span> / <span class="b">M 题材</span></div>
+      <div class="en">Value vs Market — 看公司基本面 vs 看市场风口</div>
+    </div>
+    <div class="polar-card">
+      <div class="label">第 2 维 持仓周期</div>
+      <div class="pair"><span class="a">L 长线</span> / <span class="b">S 短线</span></div>
+      <div class="en">Long-term vs Short-term — ≥ 6 个月 vs ≤ 1 个月</div>
+    </div>
+    <div class="polar-card">
+      <div class="label">第 3 维 决策方式</div>
+      <div class="pair"><span class="a">I 独立</span> / <span class="b">F 跟风</span></div>
+      <div class="en">Independent vs Follow — 自己研究 vs 跟群消息/大 V</div>
+    </div>
+    <div class="polar-card">
+      <div class="label">第 4 维 风险态度</div>
+      <div class="pair"><span class="a">A 激进</span> / <span class="b">C 保守</span></div>
+      <div class="en">Aggressive vs Conservative — 单票 ≥ 30% vs ≤ 10%</div>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <div class="group-label">V 价值 × L 长线 <span class="meta">| 基本面 + 持仓 ≥ 6 个月</span></div>
+
+    <div class="card" style="--accent: #2b6cb0">
+      <span class="code">VLIA</span>
+      <div class="name">价投梭哈哥</div>
+      <div class="portrait">看好公司就敢重仓，扛得住 30% 回撤，是典型巴菲特信徒。</div>
+      <div class="section-title">特征</div>
+      <ul>
+      <li>持仓周期 ≥ 1 年</li>
+      <li>单票仓位 ≥ 30%</li>
+      <li>财报深度阅读 > 100 页/年</li>
+      </ul>
+      <div class="section-title">专属工具</div>
+      <div class="tool"><b>Kimi 49 元档</b><div class="desc">读超长财报 / 年报</div></div>
+      <div class="tool"><b>东方财富 Choice</b><div class="desc">看 PE 历史分位 + 行业估值</div></div>
+      <div class="tool"><b>ChatGPT Plus</b><div class="desc">行业研究 + 商业模式拆解</div></div>
+      <div class="strategy">警惕「价值陷阱」——PE 低不等于值得买；每季度检视持仓。</div>
+      <div class="hook"><span class="lbl">痛点</span> 单票 30%+ 仓位，没系统持仓体检<br><span class="lbl">AI</span> <span class="ai">AI 扫描持仓风险（PE 分位 + 行业集中度 + 黑天鹅预警）</span><br><span class="lbl">课</span> <span class="crs">模块 4「持仓体检」+ 模块 5「风控心理」</span></div>
+    </div>
+
+    <div class="card" style="--accent: #2b6cb0">
+      <span class="code">VLIC</span>
+      <div class="name">佛系研究员</div>
+      <div class="portrait">自己研究好公司，长期持有，仓位适中靠时间复利。</div>
+      <div class="section-title">特征</div>
+      <ul>
+      <li>平均持仓 ≥ 2 年</li>
+      <li>单票仓位 10-20%</li>
+      <li>完全信自己研究</li>
+      </ul>
+      <div class="section-title">专属工具</div>
+      <div class="tool"><b>Kimi 49 元</b><div class="desc">深度读研报 + 行业研究</div></div>
+      <div class="tool"><b>i 问财至尊版</b><div class="desc">筛低估值 + 多因子选股</div></div>
+      <div class="tool"><b>飞书多维表格</b><div class="desc">自建组合追踪表 + 持仓体检</div></div>
+      <div class="strategy">深度 + 复利 = 不亏大钱——坚持季报必读 + 估值分位红线。</div>
+      <div class="hook"><span class="lbl">痛点</span> 5+ 只票分散——5 份年报 + 20 份季报读不完<br><span class="lbl">AI</span> <span class="ai">Kimi / Claude 解析财报，标出 5 个关键风险点</span><br><span class="lbl">课</span> <span class="crs">模块 2「Kimi 长文 prompt 套件」</span></div>
+    </div>
+
+    <div class="card" style="--accent: #2b6cb0">
+      <span class="code">VLFA</span>
+      <div class="name">群消息价投党</div>
+      <div class="portrait">听群消息选股 + 重仓白马 + 长期持有，是消息型价投的典型。</div>
+      <div class="section-title">特征</div>
+      <ul>
+      <li>平均持仓 ≥ 1 年</li>
+      <li>单票仓位 ≥ 30%</li>
+      <li>听消息但只买白马</li>
+      </ul>
+      <div class="section-title">专属工具</div>
+      <div class="tool"><b>东方财富 APP</b><div class="desc">看行情 + 公告提醒</div></div>
+      <div class="tool"><b>Kimi 49 元</b><div class="desc">群消息核查 + 标的快评</div></div>
+      <div class="tool"><b>i 问财至尊版</b><div class="desc">白马股筛选 + 估值分位</div></div>
+      <div class="strategy">听消息 ≠ 不动脑——每条消息先核查「数据 + 利益声明」再决定仓位。</div>
+      <div class="hook"><span class="lbl">痛点</span> 重仓白马 + 听消息——怕消息造假又怕错过机会<br><span class="lbl">AI</span> <span class="ai">AI 群消息实时核查（事实 / 观点 / 骗局分类）</span><br><span class="lbl">课</span> <span class="crs">模块 2「AI 群消息核查 prompt」</span></div>
+    </div>
+
+    <div class="card" style="--accent: #2b6cb0">
+      <span class="code">VLFC</span>
+      <div class="name">佛系定投党</div>
+      <div class="portrait">听群里 / 大 V 推荐的白马 ETF 长期定投，是消息驱动型长期主义者。</div>
+      <div class="section-title">特征</div>
+      <ul>
+      <li>70% 仓位在 ETF</li>
+      <li>平均持仓 ≥ 2 年</li>
+      <li>听消息但只买白马</li>
+      </ul>
+      <div class="section-title">专属工具</div>
+      <div class="tool"><b>东方财富 APP</b><div class="desc">看 ETF 行情 + 净值走势</div></div>
+      <div class="tool"><b>通义千问免费版</b><div class="desc">问行业前景 + 主题分析</div></div>
+      <div class="tool"><b>i 问财基础版</b><div class="desc">筛白马 ETF + 低估值标的</div></div>
+      <div class="strategy">ETF 不是「买了就忘」——每半年做一次再平衡。</div>
+      <div class="hook"><span class="lbl">痛点</span> 定投标的、金额、频率全凭感觉<br><span class="lbl">AI</span> <span class="ai">AI 定投策略生成（标的 + 金额 + 频率）+ 每半年复盘</span><br><span class="lbl">课</span> <span class="crs">模块 4「AI 定投策略 prompt」</span></div>
+    </div>
+
+    <div class="group-label">V 价值 × S 短线 <span class="meta">| 基本面 + 持仓 ≤ 1 个月</span></div>
+
+    <div class="card" style="--accent: #3182ce">
+      <span class="code">VSIA</span>
+      <div class="name">价值猎手</div>
+      <div class="portrait">把「低估值 + 短期催化」结合，等不到价值兑现就走，是机构研究员思维。</div>
+      <div class="section-title">特征</div>
+      <ul>
+      <li>平均持仓 1-3 个月</li>
+      <li>单票仓位 20-30%</li>
+      <li>财报 + 技术面都看</li>
+      </ul>
+      <div class="section-title">专属工具</div>
+      <div class="tool"><b>Kimi 49 元</b><div class="desc">速读财报 + 提取关键科目</div></div>
+      <div class="tool"><b>i 问财至尊版</b><div class="desc">条件预警 + 估值分位筛选</div></div>
+      <div class="tool"><b>BigQuant</b><div class="desc">回测信号 + 量化验证</div></div>
+      <div class="strategy">价值 + 短期不是矛盾——但设好止损线（-8% 必须出）。</div>
+      <div class="hook"><span class="lbl">痛点</span> 1-3 个月持仓——等不到价值兑现就走，错过大牛股<br><span class="lbl">AI</span> <span class="ai">AI 估值回归预测（PE 分位 + 同行业 + 业绩兑现）</span><br><span class="lbl">课</span> <span class="crs">模块 3「PE 分位 + 回归时间窗 prompt」</span></div>
+    </div>
+
+    <div class="card" style="--accent: #3182ce">
+      <span class="code">VSIC</span>
+      <div class="name">价值波段客</div>
+      <div class="portrait">基本面研究 + 独立判断 + 短线波段 + 严守仓位，不追高不重仓。</div>
+      <div class="section-title">特征</div>
+      <ul>
+      <li>平均持仓 2-3 个月</li>
+      <li>单票仓位 10-15%</li>
+      <li>PE 历史分位是核心</li>
+      </ul>
+      <div class="section-title">专属工具</div>
+      <div class="tool"><b>i 问财至尊版</b><div class="desc">PE 分位筛选 + 条件预警</div></div>
+      <div class="tool"><b>Kimi 49 元</b><div class="desc">读财报 + 财务健康度</div></div>
+      <div class="tool"><b>飞书多维表格</b><div class="desc">跟踪估值变化 + 自建规则</div></div>
+      <div class="strategy">PE 分位 < 30% 才买，> 70% 就出——纪律 > 感觉。</div>
+      <div class="hook"><span class="lbl">痛点</span> PE 分位是核心——多标的对比靠手动太慢<br><span class="lbl">AI</span> <span class="ai">AI 多标的 PE 分位 / 业绩 / 行业均值对比表</span><br><span class="lbl">课</span> <span class="crs">模块 2「i 问财 + AI 估值对比 prompt」</span></div>
+    </div>
+
+    <div class="card" style="--accent: #3182ce">
+      <span class="code">VSFA</span>
+      <div class="name">价值投机客</div>
+      <div class="portrait">信群消息 + 短期博弈 + 价值选股但节奏快，是激进型消息散户。</div>
+      <div class="section-title">特征</div>
+      <ul>
+      <li>平均持仓 2-4 周</li>
+      <li>一年交易 30-50 次</li>
+      <li>听消息但只买白马</li>
+      </ul>
+      <div class="section-title">专属工具</div>
+      <div class="tool"><b>Kimi 49 元</b><div class="desc">5 分钟速读 200 页研报</div></div>
+      <div class="tool"><b>i 问财至尊版</b><div class="desc">核查研报数据 + 多源验证</div></div>
+      <div class="tool"><b>通义千问</b><div class="desc">识别伪研报 + 利益声明核查</div></div>
+      <div class="strategy">跟消息也要先核查——任何研报都要先看「数据 + 利益声明」再跟。</div>
+      <div class="hook"><span class="lbl">痛点</span> 高频研报阅读——80% 是车轱辘话，20% 是关键<br><span class="lbl">AI</span> <span class="ai">AI 研报摘要 + 利益声明核查，5 分钟速读 200 页</span><br><span class="lbl">课</span> <span class="crs">模块 2「Kimi + 通义研报速读 prompt」</span></div>
+    </div>
+
+    <div class="card" style="--accent: #3182ce">
+      <span class="code">VSFC</span>
+      <div class="name">保守价值派</div>
+      <div class="portrait">听群消息选白马 + 短线 + 严守仓位，AI 帮我盯盘、帮我出。</div>
+      <div class="section-title">特征</div>
+      <ul>
+      <li>平均持仓 2-3 个月</li>
+      <li>单票仓位 ≤ 10%</li>
+      <li>止损线严格执行</li>
+      </ul>
+      <div class="section-title">专属工具</div>
+      <div class="tool"><b>ChatGPT Plus</b><div class="desc">写交易计划 + 拆解研究框架</div></div>
+      <div class="tool"><b>i 问财至尊版</b><div class="desc">条件预警 + 实时信号</div></div>
+      <div class="tool"><b>通义千问 Pro</b><div class="desc">自动生成复盘报告</div></div>
+      <div class="strategy">研究 + 纪律 = 不亏大钱——把「AI 当纪律员」是这型的核心。</div>
+      <div class="hook"><span class="lbl">痛点</span> 仓位 ≤ 10% 严守纪律——赚得少，羡慕又怕亏<br><span class="lbl">AI</span> <span class="ai">AI 风险敞口分析（不同仓位下的收益 / 波动 / 回撤曲线）</span><br><span class="lbl">课</span> <span class="crs">模块 5「AI 仓位模拟 prompt」</span></div>
+    </div>
+
+    <div class="group-label">M 题材 × L 长线 <span class="meta">| 看好赛道 + 持仓 ≥ 6 个月</span></div>
+
+    <div class="card" style="--accent: #c05621">
+      <span class="code">MLIA</span>
+      <div class="name">题材龙头捕手</div>
+      <div class="portrait">死磕一条赛道 3-5 年，重仓龙头股，新能源老炮的标准画像。</div>
+      <div class="section-title">特征</div>
+      <ul>
+      <li>持仓 ≥ 2 年</li>
+      <li>单赛道 ≥ 50% 仓位</li>
+      <li>至少跟踪 10 个产业链公司</li>
+      </ul>
+      <div class="section-title">专属工具</div>
+      <div class="tool"><b>Wind 个人基础版</b><div class="desc">产业链数据 + 上下游梳理</div></div>
+      <div class="tool"><b>Kimi 49 元</b><div class="desc">行业研究 + 赛道分析</div></div>
+      <div class="tool"><b>i 问财至尊版</b><div class="desc">赛道筛选 + 龙头识别</div></div>
+      <div class="strategy">单赛道集中度 > 50% 是双刃剑——配 30% 防御仓位。</div>
+      <div class="hook"><span class="lbl">痛点</span> 单赛道 ≥ 50% 仓位——1 次产业拐点回撤 30%+<br><span class="lbl">AI</span> <span class="ai">AI 产业链景气度预警（上游价格 / 中游产能 / 下游订单）</span><br><span class="lbl">课</span> <span class="crs">模块 3「产业链景气度追踪 prompt」</span></div>
+    </div>
+
+    <div class="card" style="--accent: #c05621">
+      <span class="code">MLIC</span>
+      <div class="name">赛道慢牛派</div>
+      <div class="portrait">看好赛道 + 独立研究 + 长线持有 + 仓位适中，是稳健型题材玩家。</div>
+      <div class="section-title">特征</div>
+      <ul>
+      <li>持仓 1-2 年</li>
+      <li>单赛道 30-50% 仓位</li>
+      <li>自己研究产业链</li>
+      </ul>
+      <div class="section-title">专属工具</div>
+      <div class="tool"><b>Wind 个人基础版</b><div class="desc">赛道景气度数据</div></div>
+      <div class="tool"><b>i 问财至尊版</b><div class="desc">赛道筛选 + 条件预警</div></div>
+      <div class="tool"><b>Kimi 49 元</b><div class="desc">行业研究 + 产业链分析</div></div>
+      <div class="strategy">赛道景气度跟踪是核心——但要警惕「单赛道集中度过高」。</div>
+      <div class="hook"><span class="lbl">痛点</span> 等不到兑现就换——频繁切赛道追高杀低<br><span class="lbl">AI</span> <span class="ai">AI 赛道切换时机分析（景气 / 估值 / 资金 3 维）</span><br><span class="lbl">课</span> <span class="crs">模块 4「赛道切换决策 prompt」</span></div>
+    </div>
+
+    <div class="card" style="--accent: #c05621">
+      <span class="code">MLFA</span>
+      <div class="name">群消息赛道党</div>
+      <div class="portrait">听群消息选赛道 + 重仓龙头 + 长期持有，是消息驱动型赛道玩家。</div>
+      <div class="section-title">特征</div>
+      <ul>
+      <li>持仓 ≥ 2 年</li>
+      <li>单赛道 ≥ 50% 仓位</li>
+      <li>听消息但做长线</li>
+      </ul>
+      <div class="section-title">专属工具</div>
+      <div class="tool"><b>Wind 个人基础版</b><div class="desc">赛道景气度数据</div></div>
+      <div class="tool"><b>Kimi 49 元</b><div class="desc">赛道前景核查</div></div>
+      <div class="tool"><b>通义千问</b><div class="desc">群消息赛道真假识别</div></div>
+      <div class="strategy">听消息做赛道——但要警惕「单赛道集中度 > 50%」的双刃剑效应。</div>
+      <div class="hook"><span class="lbl">痛点</span> 重仓单赛道 + 听消息——怕踩雷又怕错过<br><span class="lbl">AI</span> <span class="ai">AI 赛道前景核查 + 群消息真假识别</span><br><span class="lbl">课</span> <span class="crs">模块 3「赛道前景核查 prompt」</span></div>
+    </div>
+
+    <div class="card" style="--accent: #c05621">
+      <span class="code">MLFC</span>
+      <div class="name">佛系赛道党</div>
+      <div class="portrait">听群里 / 大 V 推荐 + 买赛道 ETF + 长期持有，不折腾。</div>
+      <div class="section-title">特征</div>
+      <ul>
+      <li>70% 仓位在赛道 ETF</li>
+      <li>持仓 ≥ 2 年</li>
+      <li>每年最多调 1 次仓位</li>
+      </ul>
+      <div class="section-title">专属工具</div>
+      <div class="tool"><b>东方财富 APP</b><div class="desc">看 ETF 净值 + 持仓变化</div></div>
+      <div class="tool"><b>通义千问免费版</b><div class="desc">问赛道前景 + 长期趋势</div></div>
+      <div class="tool"><b>同花顺 i 问财基础版</b><div class="desc">ETF 筛选 + 主题对比</div></div>
+      <div class="strategy">赛道 ETF 也是 ETF——警惕「行业主题 ETF 集中度过高」。</div>
+      <div class="hook"><span class="lbl">痛点</span> 赛道 ETF 长期持——「赛道是不是过气」没系统判断<br><span class="lbl">AI</span> <span class="ai">AI 赛道长期趋势评估（政策 / 技术 / 渗透率 / 国际对比）</span><br><span class="lbl">课</span> <span class="crs">模块 3「赛道长期趋势评估 prompt」</span></div>
+    </div>
+
+    <div class="group-label">M 题材 × S 短线 <span class="meta">| 看好风口 + 持仓 ≤ 1 个月</span></div>
+
+    <div class="card" style="--accent: #dd6b20">
+      <span class="code">MSIA</span>
+      <div class="name">涨停敢死队</div>
+      <div class="portrait">追涨停板、打板族，3 天不涨就换，是题材短线激进派的标准画像。</div>
+      <div class="section-title">特征</div>
+      <ul>
+      <li>平均持仓 1-3 天</li>
+      <li>一年交易 100+ 次</li>
+      <li>单票仓位 30%+</li>
+      </ul>
+      <div class="section-title">专属工具</div>
+      <div class="tool"><b>i 问财至尊版</b><div class="desc">涨停预警 + 题材识别</div></div>
+      <div class="tool"><b>同花顺 APP</b><div class="desc">盘口数据 + 资金流向</div></div>
+      <div class="tool"><b>通义千问</b><div class="desc">题材逻辑核查 + 概念验证</div></div>
+      <div class="strategy">打板胜率 < 30% 的人长期必亏——先做半年回测再上真金。</div>
+      <div class="hook"><span class="lbl">痛点</span> 一年 100+ 次交易——没系统复盘，胜率多少不知道<br><span class="lbl">AI</span> <span class="ai">AI 交易复盘助手（进出场 / 情绪 / 市场环境，输出胜率）</span><br><span class="lbl">课</span> <span class="crs">模块 6「AI 复盘 prompt 套件」</span></div>
+    </div>
+
+    <div class="card" style="--accent: #dd6b20">
+      <span class="code">MSIC</span>
+      <div class="name">题材波段手</div>
+      <div class="portrait">题材派 + 独立判断 + 短线 + 仓位适中，是题材短线里的理性玩家。</div>
+      <div class="section-title">特征</div>
+      <ul>
+      <li>平均持仓 3-7 天</li>
+      <li>单票仓位 10-20%</li>
+      <li>每月复盘 1 次</li>
+      </ul>
+      <div class="section-title">专属工具</div>
+      <div class="tool"><b>i 问财至尊版</b><div class="desc">题材筛选 + 资金面分析</div></div>
+      <div class="tool"><b>同花顺 APP</b><div class="desc">技术形态 + 量价信号</div></div>
+      <div class="tool"><b>ChatGPT Plus</b><div class="desc">题材逻辑分析 + 复盘框架</div></div>
+      <div class="strategy">题材短线操盘的核心不是「抓得快」，是「出得狠」——止损止盈不打折。</div>
+      <div class="hook"><span class="lbl">痛点</span> 快进快出——止盈止损靠感觉，「赢小亏大」<br><span class="lbl">AI</span> <span class="ai">AI 止盈止损纪律系统（按波动率自动设线，触发即提醒）</span><br><span class="lbl">课</span> <span class="crs">模块 4「AI 止盈止损 prompt 模板」</span></div>
+    </div>
+
+    <div class="card" style="--accent: #dd6b20">
+      <span class="code">MSFA</span>
+      <div class="name">群消息小韭菜</div>
+      <div class="portrait">群里说「今天要起飞」就满仓，群里说「割了」就清仓，听消息交易。</div>
+      <div class="section-title">特征</div>
+      <ul>
+      <li>平均持仓 1-5 天</li>
+      <li>一天可能交易 3 次</li>
+      <li>90% 决策来自群消息</li>
+      </ul>
+      <div class="section-title">专属工具</div>
+      <div class="tool"><b>通义千问免费版</b><div class="desc">核查消息真假 + 概念辨伪</div></div>
+      <div class="tool"><b>通用 LLM</b><div class="desc">识别伪研报 + 利益链分析</div></div>
+      <div class="tool"><b>巨潮资讯 APP</b><div class="desc">看原始公告 + 权威披露</div></div>
+      <div class="strategy">听消息交易的人，99% 是被消息方赚的人——先学会「识别 3 类信号」。</div>
+      <div class="hook"><span class="lbl">痛点</span> 听消息交易——「消息真假」靠群里感觉<br><span class="lbl">AI</span> <span class="ai">AI 题材真伪核查（概念来源 / 原始公告 / 机构持仓）</span><br><span class="lbl">课</span> <span class="crs">模块 2「AI 题材核查 prompt 套件」</span></div>
+    </div>
+
+    <div class="card" style="--accent: #dd6b20">
+      <span class="code">MSFC</span>
+      <div class="name">题材纪律员</div>
+      <div class="portrait">题材派 + 短线 + 听群消息 + 严守仓位，AI 帮我盯盘、帮我出，纪律 > 一切。</div>
+      <div class="section-title">特征</div>
+      <ul>
+      <li>平均持仓 1-2 周</li>
+      <li>止损止盈严格执行</li>
+      <li>多工具组合按场景切换</li>
+      </ul>
+      <div class="section-title">专属工具</div>
+      <div class="tool"><b>i 问财至尊版</b><div class="desc">题材预警 + 条件信号</div></div>
+      <div class="tool"><b>同花顺 APP</b><div class="desc">盘口数据 + 实时盯盘</div></div>
+      <div class="tool"><b>ChatGPT Plus</b><div class="desc">逻辑分析 + 交易计划</div></div>
+      <div class="strategy">用 AI 把规则变成「自动执行」才是这型的护城河。</div>
+      <div class="hook"><span class="lbl">痛点</span> 跟群消息 + 严守纪律——「消息真假」靠人工判断慢<br><span class="lbl">AI</span> <span class="ai">AI 群消息实时核查（事实 / 观点 / 骗局 + 跟 / 不跟）</span><br><span class="lbl">课</span> <span class="crs">模块 2「AI 群消息核查 prompt」</span></div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    GGTI 16 型人格参考页 · 面试演示用<br>
+    配套测试页：<a href="gougou_test_16.html">gougou_test_16.html</a>
+  </div>
+
+</div>
+</body>
+</html>

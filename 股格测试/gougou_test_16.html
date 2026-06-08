@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>股格测试 · 16型投资人格</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif; color: #2d3748; line-height: 1.6; }
+  body { min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px 16px 80px; -webkit-font-smoothing: antialiased; }
+  .container { max-width: 600px; margin: 0 auto; }
+
+  /* 通用卡片 */
+  .card { background: #ffffff; border-radius: 20px; padding: 32px 24px; box-shadow: 0 20px 60px rgba(102, 126, 234, 0.25); margin-bottom: 20px; }
+  .card-narrow { padding: 28px 20px; }
+
+  /* 顶部 Header */
+  .header { text-align: center; color: #fff; padding: 40px 16px 20px; }
+  .header h1 { font-size: 36px; font-weight: 800; letter-spacing: 1px; margin-bottom: 8px; text-shadow: 0 2px 12px rgba(0,0,0,0.15); }
+  .header .subtitle { font-size: 16px; opacity: 0.9; }
+  .header .badge { display: inline-block; margin-top: 12px; padding: 4px 12px; background: rgba(246, 211, 101, 0.25); color: #f6d365; font-size: 12px; font-weight: 600; border-radius: 999px; border: 1px solid rgba(246, 211, 101, 0.5); }
+
+  /* 入口页 */
+  .welcome { text-align: center; padding: 40px 24px; }
+  .welcome .big-title { font-size: 32px; font-weight: 800; background: linear-gradient(90deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 12px; }
+  .welcome .sub { font-size: 16px; color: #4a5568; margin-bottom: 28px; }
+  .welcome .feature-list { text-align: left; background: #f7fafc; border-radius: 16px; padding: 20px; margin-bottom: 28px; }
+  .welcome .feature-list li { list-style: none; padding: 6px 0; font-size: 15px; color: #2d3748; }
+  .welcome .feature-list li::before { content: "✓"; color: #f6d365; font-weight: 800; margin-right: 8px; }
+
+  .btn { display: inline-block; background: linear-gradient(90deg, #667eea, #764ba2); color: #fff; border: none; padding: 16px 32px; border-radius: 999px; font-size: 17px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4); transition: transform 0.15s, box-shadow 0.15s; min-height: 50px; }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 12px 24px rgba(102, 126, 234, 0.5); }
+  .btn:active { transform: translateY(0); }
+  .btn:disabled { background: #a0aec0; cursor: not-allowed; box-shadow: none; transform: none; }
+  .btn-gold { background: linear-gradient(90deg, #f6d365, #fda085); color: #744210; box-shadow: 0 8px 20px rgba(246, 211, 101, 0.4); }
+  .btn-gold:hover { box-shadow: 0 12px 24px rgba(246, 211, 101, 0.5); }
+  .btn-block { display: block; width: 100%; }
+  .btn-secondary { background: #fff; color: #667eea; border: 2px solid #667eea; box-shadow: none; }
+  .btn-small { padding: 10px 20px; font-size: 14px; min-height: 40px; }
+
+  /* 进度条 */
+  .progress { background: rgba(255,255,255,0.25); height: 6px; border-radius: 999px; margin-bottom: 24px; overflow: hidden; }
+  .progress-bar { height: 100%; background: linear-gradient(90deg, #f6d365, #fda085); border-radius: 999px; transition: width 0.3s; }
+  .progress-text { color: #fff; font-size: 13px; margin-bottom: 8px; text-align: center; opacity: 0.9; }
+
+  /* 题目页 */
+  .question { animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .question-text { font-size: 20px; font-weight: 700; color: #2d3748; margin-bottom: 24px; line-height: 1.5; }
+  .option { display: block; width: 100%; text-align: left; background: #f7fafc; border: 2px solid #e2e8f0; border-radius: 14px; padding: 16px 18px; margin-bottom: 12px; cursor: pointer; font-size: 15px; color: #2d3748; line-height: 1.5; transition: all 0.15s; min-height: 60px; }
+  .option:hover { border-color: #cbd5e0; background: #edf2f7; }
+  .option.selected { border-color: #f6d365; background: rgba(246, 211, 101, 0.12); color: #744210; font-weight: 600; }
+  .option .opt-label { display: inline-block; width: 24px; height: 24px; line-height: 24px; text-align: center; background: #fff; border-radius: 50%; margin-right: 10px; font-weight: 700; color: #667eea; border: 1.5px solid #cbd5e0; }
+  .option.selected .opt-label { background: #f6d365; color: #744210; border-color: #f6d365; }
+  .nav-row { display: flex; gap: 12px; margin-top: 20px; }
+  .nav-row .btn { flex: 1; }
+
+  /* 结果页 */
+  .result { animation: fadeIn 0.5s ease; }
+  .result-hero { text-align: center; padding: 32px 20px; background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); border-radius: 20px; color: #744210; margin-bottom: 20px; }
+  .result-hero .label { font-size: 13px; letter-spacing: 2px; opacity: 0.8; }
+  .result-hero .code { display: inline-block; margin: 12px 0; padding: 8px 24px; background: rgba(255,255,255,0.7); border-radius: 12px; font-size: 32px; font-weight: 800; letter-spacing: 4px; color: #553c10; }
+  .result-hero .name { font-size: 48px; font-weight: 900; line-height: 1.2; margin-bottom: 12px; text-shadow: 0 2px 6px rgba(255,255,255,0.3); }
+  .result-hero .portrait { font-size: 16px; line-height: 1.6; opacity: 0.92; max-width: 460px; margin: 0 auto; }
+
+  .section-title { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: #667eea; margin-bottom: 12px; text-transform: uppercase; }
+  .traits li { list-style: none; padding: 10px 14px; background: #f7fafc; border-left: 3px solid #f6d365; border-radius: 6px; margin-bottom: 8px; font-size: 15px; color: #2d3748; }
+  .tool-card { display: flex; align-items: flex-start; gap: 12px; padding: 14px; background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); border-radius: 12px; margin-bottom: 10px; border: 1px solid #e2e8f0; }
+  .tool-card .icon { width: 40px; height: 40px; flex-shrink: 0; border-radius: 10px; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; }
+  .tool-card .body { flex: 1; }
+  .tool-card .name { font-size: 15px; font-weight: 700; color: #2d3748; margin-bottom: 4px; }
+  .tool-card .desc { font-size: 13px; color: #4a5568; line-height: 1.5; }
+
+  .strategy-box { background: linear-gradient(135deg, rgba(246, 211, 101, 0.15), rgba(253, 160, 133, 0.15)); border: 1.5px dashed #f6d365; border-radius: 14px; padding: 16px 18px; font-size: 15px; color: #744210; line-height: 1.6; }
+  .strategy-box .label { font-weight: 800; margin-right: 4px; }
+
+  /* 分享码区 */
+  .share-box { background: #2d3748; color: #fff; border-radius: 14px; padding: 18px; text-align: center; }
+  .share-box .code-display { font-family: "SF Mono", Consolas, "Courier New", monospace; font-size: 24px; font-weight: 800; letter-spacing: 3px; color: #f6d365; margin: 8px 0; }
+  .share-box .hint { font-size: 12px; opacity: 0.6; margin-top: 4px; }
+  .toast { position: fixed; top: 30%; left: 50%; transform: translateX(-50%); background: rgba(45, 55, 72, 0.95); color: #fff; padding: 12px 24px; border-radius: 999px; font-size: 14px; z-index: 9999; animation: toastFade 2s ease; pointer-events: none; }
+  @keyframes toastFade { 0% { opacity: 0; transform: translate(-50%, -10px); } 15%, 75% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; } }
+
+  /* 雷达图 */
+  .radar { width: 280px; height: 280px; margin: 16px auto; }
+  .radar svg { width: 100%; height: 100%; }
+
+  /* 海报内容（用于 html2canvas 截图） */
+  .poster { width: 1080px; height: 1920px; padding: 100px 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 60%, #f6d365 130%); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: space-between; text-align: center; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; position: relative; }
+  .poster .p-top { font-size: 36px; opacity: 0.85; letter-spacing: 6px; }
+  .poster .p-avatar { width: 180px; height: 180px; border-radius: 50%; background: rgba(255,255,255,0.2); border: 6px solid rgba(246, 211, 101, 0.9); display: flex; align-items: center; justify-content: center; font-size: 90px; margin: 30px 0; }
+  .poster .p-title { font-size: 32px; font-weight: 600; letter-spacing: 4px; opacity: 0.9; }
+  .poster .p-code { font-family: "SF Mono", Consolas, monospace; font-size: 110px; font-weight: 800; color: #f6d365; letter-spacing: 12px; margin: 20px 0 30px; text-shadow: 0 4px 20px rgba(0,0,0,0.25); }
+  .poster .p-name { font-size: 160px; font-weight: 900; line-height: 1.1; margin: 20px 0; text-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+  .poster .p-portrait { font-size: 38px; line-height: 1.5; opacity: 0.95; max-width: 900px; margin: 30px 0 50px; }
+  .poster .p-tools { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin: 30px 0; }
+  .poster .p-tool { background: rgba(255,255,255,0.18); border: 2px solid rgba(246, 211, 101, 0.6); border-radius: 24px; padding: 24px 30px; font-size: 32px; font-weight: 600; min-width: 240px; backdrop-filter: blur(10px); }
+  .poster .p-hash { font-size: 28px; color: #f6d365; letter-spacing: 6px; margin: 30px 0 20px; font-weight: 700; }
+  .poster .p-foot { font-size: 22px; opacity: 0.7; line-height: 1.6; max-width: 800px; margin: 20px 0 0; }
+  .poster .p-disclaimer { font-size: 18px; opacity: 0.6; margin-top: 14px; }
+
+  /* v2 提示 */
+  .v2-hint { background: rgba(255,255,255,0.2); border: 1px dashed rgba(255,255,255,0.4); color: #fff; border-radius: 10px; padding: 10px 14px; font-size: 12px; text-align: center; margin: 16px 0 0; }
+  .v2-hint .v2-btn { display: inline-block; margin-left: 8px; padding: 4px 12px; background: rgba(246, 211, 101, 0.4); border-radius: 6px; color: #f6d365; font-size: 11px; font-weight: 600; opacity: 0.7; cursor: not-allowed; }
+
+  /* 合规免责 */
+  .disclaimer { color: rgba(255,255,255,0.7); font-size: 11px; text-align: center; line-height: 1.6; padding: 20px 16px; max-width: 600px; margin: 0 auto; }
+
+  /* 错误状态 */
+  .error { background: #fffaf0; border: 1px solid #ed8936; color: #7b341e; padding: 12px 16px; border-radius: 10px; margin-bottom: 12px; font-size: 14px; }
+
+  /* 页面切换 */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* 移动端适配 */
+  @media (max-width: 480px) {
+    .header h1 { font-size: 28px; }
+    .result-hero .name { font-size: 36px; }
+    .result-hero .code { font-size: 26px; padding: 6px 18px; }
+    .question-text { font-size: 18px; }
+    .option { font-size: 14px; padding: 14px 14px; }
+  }
+
+.dim-interpret { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-top: 16px; }
+.dim-card { background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); border-radius: 12px; padding: 14px 16px; border-left: 4px solid #764ba2; }
+.dim-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.dim-head .zh { font-size: 15px; font-weight: 700; color: #2d3748; }
+.dim-head .en { font-size: 11px; color: #a0aec0; font-family: Inter, -apple-system, sans-serif; }
+.dim-head .winner-tag { margin-left: auto; font-size: 12px; font-weight: 600; color: #764ba2; background: white; padding: 2px 8px; border-radius: 10px; }
+.dim-desc { font-size: 13px; line-height: 1.6; color: #4a5568; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- 顶部 Header -->
+  <div class="header" id="appHeader">
+    <h1>股格测试 (GGTI) · 16 型</h1>
+    <div class="subtitle">5 分钟，测出你的投资人格</div>
+    <div class="badge">MBTI 同款 · 4 字母代码</div>
+  </div>
+
+  <!-- 入口页 -->
+  <div class="page active" id="pageWelcome">
+    <div class="card welcome">
+      <div class="big-title">测一测你的"股格"</div>
+      <div class="sub">像测 MBTI 一样测你的投资人格</div>
+      <ul class="feature-list">
+        <li>20 道题 · 4 个维度</li>
+        <li>4 字母代码 + 16 种人格名</li>
+        <li>3 个最匹配的 AI 工具</li>
+        <li>1 套专属策略提醒</li>
+        <li>支持生成海报 · 分享给朋友</li>
+      </ul>
+      <button class="btn btn-block" onclick="startTest()">开始测试</button>
+      <div id="lastResult" style="display:none; margin-top:20px; padding:16px; background:#f7fafc; border-radius:12px; text-align:left;">
+        <div style="font-size:13px; color:#4a5568; margin-bottom:6px;">你上次的结果：</div>
+        <div style="font-size:18px; font-weight:800; color:#2d3748; margin-bottom:8px;"><span id="lastCode"></span> · <span id="lastName"></span></div>
+        <div style="font-size:13px; color:#4a5568; margin-bottom:12px;"><span id="lastTime"></span></div>
+        <button class="btn btn-gold btn-small" onclick="viewLastResult()">查看我的结果</button>
+        <button class="btn btn-secondary btn-small" onclick="retakeTest()" style="margin-left:8px;">重新测试</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 题目页 -->
+  <div class="page" id="pageQuestion">
+    <div class="progress-text" id="progressText">第 1 / 20 题</div>
+    <div class="progress"><div class="progress-bar" id="progressBar" style="width:5%"></div></div>
+    <div class="card card-narrow question" id="questionCard">
+      <div class="question-text" id="questionText"></div>
+      <div id="optionsBox"></div>
+      <div class="nav-row">
+        <button class="btn btn-secondary" id="btnPrev" onclick="prevQuestion()">上一题</button>
+        <button class="btn" id="btnNext" onclick="nextQuestion()" disabled>下一题</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 结果页 -->
+  <div class="page" id="pageResult">
+    <div class="result">
+      <div class="result-hero" id="resultHero">
+        <div class="label">YOUR STOCK PERSONALITY</div>
+        <div class="code" id="rCode">----</div>
+        <div class="name" id="rName">--</div>
+        <div class="portrait" id="rPortrait">--</div>
+      </div>
+
+      <!-- 4 维雷达图 -->
+      <div class="card card-narrow" style="text-align:center;">
+        <div class="section-title">4 维倾向分布</div>
+        <div class="radar"><svg id="radarSvg" viewBox="0 0 240 200"></svg></div>
+        <h2 class="section-title" style="margin-top:24px;">4 维详细解读 (Dimension Breakdown)</h2>
+        <div class="dim-interpret" id="dimInterpret"></div>
+        <script>
+        (function() {
+          const el = document.getElementById("dimInterpret");
+          if (!el) return;
+          function paint() {
+            const cur = window._lastResult;
+            const scores = cur && cur.scores ? cur.scores : { V: 0, M: 0, L: 0, S: 0, I: 0, C: 0, A: 0, F: 0 };
+            const dims = [
+              { a: "V", b: "M", name_zh: "决策依据", name_en: "Decision Basis", descA: "你是价值派选手：决策更看公司基本面、内在价值，长期视角重于短期价格。", descB: "你是题材派选手：决策更看市场热点、概念催化、情绪驱动，看重赛道和想象力。" },
+              { a: "L", b: "S", name_zh: "持仓周期", name_en: "Holding Period", descA: "长线选手：持有周期以月/季度计，习惯慢慢变富。", descB: "短线选手：持有周期以日/周计，看重快进快出和盘面信号。" },
+              { a: "I", b: "F", name_zh: "决策方式", name_en: "Decision Style", descA: "独立型：自己做研究、自己拍板，不轻易被群消息带跑。", descB: "跟风型：决策依赖群消息 / 大 V 观点，等别人先动再跟。" },
+              { a: "A", b: "C", name_zh: "风险态度", name_en: "Risk Posture", descA: "激进型：敢重仓、敢追板、容忍高波动换取高弹性。", descB: "保守型：单票仓位严控、止损纪律优先，不愿做第一个吃螃蟹的人。" }
+            ];
+            el.innerHTML = dims.map(d => {
+              const w = scores[d.a] >= scores[d.b] ? d.a : d.b;
+              const winner_zh = NAMES[w] || w;
+              const winner_en = NAMES_EN[w] || w;
+              const desc = w === d.a ? d.descA : d.descB;
+              return `<div class="dim-card"><div class="dim-head"><span class="zh">${d.name_zh}</span><span class="en">${d.name_en}</span><span class="winner-tag">${winner_zh} · ${winner_en}</span></div><div class="dim-desc">${desc}</div></div>`;
+            }).join("");
+          }
+          paint();
+          const orig = window.renderResult;
+          if (orig) {
+            window.renderResult = function(r) { orig(r); paint(); };
+          }
+        })();
+        </script>
+        <div style="font-size:12px; color:#4a5568; margin-top:8px;">V/M 决策依据 · L/S 持仓周期 · I/F 决策方式 · A/C 风险态度</div>
+      </div>
+
+      <!-- 3 条特征 -->
+      <div class="card card-narrow">
+        <div class="section-title">3 条核心特征</div>
+        <ul class="traits" id="rTraits"></ul>
+      </div>
+
+      <!-- 3 个 AI 工具 -->
+      <div class="card card-narrow">
+        <div class="section-title">推荐 3 个 AI 工具</div>
+        <div id="rTools"></div>
+      </div>
+
+      <!-- 1 套策略提醒 -->
+      <div class="card card-narrow">
+        <div class="section-title">专属策略提醒</div>
+        <div class="strategy-box" id="rStrategy"></div>
+      </div>
+
+      <!-- 分享码 -->
+      <div class="card card-narrow">
+        <div class="section-title">分享码</div>
+        <div class="share-box">
+          <div style="font-size:12px; opacity:0.7;">你的专属代码</div>
+          <div class="code-display" id="shareCode">----</div>
+          <div class="hint">分享给朋友，让 TA 测一测看人格</div>
+        </div>
+        <div class="nav-row" style="margin-top:14px;">
+          <button class="btn btn-gold" onclick="copyShareLink()">分享给朋友</button>
+          <button class="btn" onclick="generatePoster()">生成海报</button>
+        </div>
+      </div>
+
+      <!-- 操作 -->
+      <div class="card card-narrow" style="text-align:center;">
+        <button class="btn btn-secondary btn-small" onclick="retakeTest()">重新测试</button>
+      </div>
+
+      <!-- v2 提示 -->
+      <div class="v2-hint">v2 上线后即可用语音回答<span class="v2-btn">🎤 v2 即将开放</span></div>
+    </div>
+  </div>
+
+  <!-- 海报渲染容器（隐藏） -->
+  <div id="posterContainer" style="position:fixed; left:-9999px; top:0;"></div>
+
+  <div class="disclaimer">
+    ⚠️ 本测试为教育 / 娱乐用途，<b>不构成投资建议</b>。测试结果基于你的答题，不代表真实投资能力。<br>
+    AI 工具推荐仅供参考，请根据自身情况独立判断。<b>投资有风险，决策需谨慎。</b>
+  </div>
+</div>
+
+<script>
+/* ===================== 题目数据 ===================== */
+const QUESTIONS = [
+  { text: "看到一只票涨停，你的第一反应是？", opts: [
+    { label: "A", text: "立刻看下基本面，景气才考虑", score: { V: 1 } },
+    { label: "B", text: "看下技术形态，回调 5% 再进", score: { S: 1 } },
+    { label: "C", text: "立刻追——强者恒强", score: { A: 1 } },
+    { label: "D", text: "看群里有没有人讨论", score: { F: 1 } }
+  ]},
+  { text: "一笔交易亏了 10%，你会？", opts: [
+    { label: "A", text: "加仓摊低成本", score: { A: 1 } },
+    { label: "B", text: "反思逻辑还在不在", score: { V: 1, I: 1 } },
+    { label: "C", text: "跌破止损位就出", score: { C: 1 } },
+    { label: "D", text: "跟着别人一起扛", score: { F: 1 } }
+  ]},
+  { text: "你每周看盘几次？", opts: [
+    { label: "A", text: "每天 3 次以上", score: { S: 1 } },
+    { label: "B", text: "每天 1 次", score: {} },
+    { label: "C", text: "每周 1-2 次", score: { L: 1 } },
+    { label: "D", text: "不怎么看", score: { L: 1, F: 1 } }
+  ]},
+  { text: "一只票横盘 3 个月，你会？", opts: [
+    { label: "A", text: "换别的", score: { S: 1 } },
+    { label: "B", text: "持有等基本面兑现", score: { V: 1, L: 1 } },
+    { label: "C", text: "跌 5% 就出", score: { C: 1 } },
+    { label: "D", text: "看别人怎么说", score: { F: 1 } }
+  ]},
+  { text: "你最常买的票是哪种？", opts: [
+    { label: "A", text: "题材热点股", score: { M: 1 } },
+    { label: "B", text: "业绩稳健的白马", score: { V: 1 } },
+    { label: "C", text: "技术形态好的", score: { S: 1 } },
+    { label: "D", text: "群里推的", score: { F: 1 } }
+  ]},
+  { text: "你现在持有的票平均持仓多久？", opts: [
+    { label: "A", text: "几天", score: { S: 1 } },
+    { label: "B", text: "1-3 个月", score: {} },
+    { label: "C", text: "半年以上", score: { L: 1 } },
+    { label: "D", text: "不记得 / 没算过", score: { F: 1 } }
+  ]},
+  { text: "选股你最看重什么？", opts: [
+    { label: "A", text: "涨停板 / 资金流入", score: { M: 1 } },
+    { label: "B", text: "市盈率 / ROE / 业绩", score: { V: 1 } },
+    { label: "C", text: "K 线 / 量价 / 形态", score: { S: 1 } },
+    { label: "D", text: "群里 / 大 V 推荐", score: { F: 1 } }
+  ]},
+  { text: "你买股票的钱是自己的判断还是？", opts: [
+    { label: "A", text: "完全自己研究", score: { I: 1 } },
+    { label: "B", text: "主要自己，听听别人意见", score: {} },
+    { label: "C", text: "主要听别人的，自己核一下", score: { F: 1 } },
+    { label: "D", text: "完全听别人的", score: { F: 1 } }
+  ]},
+  { text: "你愿意为一个研究机会投入多少时间？", opts: [
+    { label: "A", text: "半小时——看一眼就买", score: { S: 1 } },
+    { label: "B", text: "1-2 小时——粗看", score: { S: 1 } },
+    { label: "C", text: "半天到一天", score: {} },
+    { label: "D", text: "几天持续跟踪", score: { L: 1, I: 1 } }
+  ]},
+  { text: "你的单只票仓位一般多少？", opts: [
+    { label: "A", text: "30% 以上", score: { A: 1 } },
+    { label: "B", text: "15-30%", score: {} },
+    { label: "C", text: "5-15%", score: { C: 1 } },
+    { label: "D", text: "不到 5%", score: { C: 1 } }
+  ]},
+  { text: "看到朋友推荐一只票，你会？", opts: [
+    { label: "A", text: "自己研究再决定", score: { I: 1 } },
+    { label: "B", text: "看下基本面没问题就买", score: { V: 1, I: 1 } },
+    { label: "C", text: "看群里别人怎么说", score: { F: 1 } },
+    { label: "D", text: "立刻买", score: { F: 1, A: 1 } }
+  ]},
+  { text: "一只票 3 天连跌 5%，你会？", opts: [
+    { label: "A", text: "加仓摊低成本", score: { A: 1 } },
+    { label: "B", text: "研究是不是基本面变了", score: { V: 1 } },
+    { label: "C", text: "设好止损线，到了就出", score: { C: 1 } },
+    { label: "D", text: "看群里怎么说", score: { F: 1 } }
+  ]},
+  { text: "你更愿意买哪种标的？", opts: [
+    { label: "A", text: "刚涨停的热门股", score: { M: 1, A: 1 } },
+    { label: "B", text: "业绩稳健的白马", score: { V: 1 } },
+    { label: "C", text: "正在突破整理平台的", score: { S: 1 } },
+    { label: "D", text: "群里 / 大 V 推荐的", score: { F: 1 } }
+  ]},
+  { text: "你买一只票的理由通常是？", opts: [
+    { label: "A", text: "题材 / 概念 / 风口", score: { M: 1 } },
+    { label: "B", text: "业绩 / 估值 / 行业地位", score: { V: 1 } },
+    { label: "C", text: "技术形态 / 量价配合", score: { S: 1 } },
+    { label: "D", text: "群里说 / 朋友说 / 大 V 推", score: { F: 1 } }
+  ]},
+  { text: "你的月换手率大概多少？", opts: [
+    { label: "A", text: "100% 以上", score: { S: 1 } },
+    { label: "B", text: "50-100%", score: { S: 1 } },
+    { label: "C", text: "20-50%", score: { L: 1 } },
+    { label: "D", text: "20% 以下", score: { L: 1 } }
+  ]},
+  { text: "如果一年下来你的账户亏了 20%，你会？", opts: [
+    { label: "A", text: "加仓摊低成本", score: { A: 1 } },
+    { label: "B", text: "反思自己是不是选错方向了", score: { V: 1, I: 1 } },
+    { label: "C", text: "严格执行止损纪律", score: { C: 1 } },
+    { label: "D", text: "等回本再说", score: { F: 1, L: 1 } }
+  ]},
+  { text: "你愿意为一只票的研究花多少钱（研报 / 付费工具）？", opts: [
+    { label: "A", text: "不花钱", score: { F: 1 } },
+    { label: "B", text: "偶尔花几十块", score: {} },
+    { label: "C", text: "一年愿意花几百块", score: { V: 1, I: 1 } },
+    { label: "D", text: "不在乎花多少——关键是好票", score: { V: 1, I: 1, A: 1 } }
+  ]},
+  { text: "你用 AI 工具主要是？", opts: [
+    { label: "A", text: "选热点题材", score: { M: 1 } },
+    { label: "B", text: "读财报看研报", score: { V: 1 } },
+    { label: "C", text: "盯盘看技术形态", score: { S: 1 } },
+    { label: "D", text: "核查群消息真假", score: { F: 1 } }
+  ]},
+  { text: "你最怕哪种情况？", opts: [
+    { label: "A", text: "错过一只大牛股", score: { A: 1, M: 1 } },
+    { label: "B", text: "买到基本面恶化的票", score: { V: 1 } },
+    { label: "C", text: "没有止损纪律被深套", score: { C: 1 } },
+    { label: "D", text: "错过群里消息", score: { F: 1 } }
+  ]},
+  { text: "你做投资最看重？", opts: [
+    { label: "A", text: "抓住风口和题材", score: { M: 1 } },
+    { label: "B", text: "找到好公司长期持有", score: { V: 1, L: 1 } },
+    { label: "C", text: "把握买卖点", score: { S: 1 } },
+    { label: "D", text: "不犯错", score: { C: 1, F: 1 } }
+  ]}
+];
+
+/* ===================== 16 型人格数据 ===================== */
+const PERSONALITIES = {
+  "VLIA": {
+    name: "价投梭哈哥",
+    portrait: "看好公司就敢重仓，扛得住 30% 回撤，是典型巴菲特信徒。",
+    traits: ["持仓周期 ≥ 1 年", "单票仓位 ≥ 30%", "财报深度阅读 > 100 页/年"],
+    tools: [
+      { name: "Kimi 49 元档", desc: "读超长财报 / 年报" },
+      { name: "东方财富 Choice", desc: "看 PE 历史分位 + 行业估值" },
+      { name: "ChatGPT Plus", desc: "行业研究 + 商业模式拆解" }
+    ],
+    strategy: "警惕「价值陷阱」——PE 低不等于值得买；每季度检视持仓。"
+  },
+  "VLIC": {
+    name: "佛系研究员",
+    portrait: "自己研究好公司，长期持有，仓位适中靠时间复利。",
+    traits: ["平均持仓 ≥ 2 年", "单票仓位 10-20%", "完全信自己研究"],
+    tools: [
+      { name: "Kimi 49 元", desc: "深度读研报 + 行业研究" },
+      { name: "i 问财至尊版", desc: "筛低估值 + 多因子选股" },
+      { name: "飞书多维表格", desc: "自建组合追踪表 + 持仓体检" }
+    ],
+    strategy: "深度 + 复利 = 不亏大钱——坚持季报必读 + 估值分位红线。"
+  },
+  "VLFA": {
+    name: "群消息价投党",
+    portrait: "听群消息选股 + 重仓白马 + 长期持有，是消息型价投的典型。",
+    traits: ["平均持仓 ≥ 1 年", "单票仓位 ≥ 30%", "听消息但只买白马"],
+    tools: [
+      { name: "东方财富 APP", desc: "看行情 + 公告提醒" },
+      { name: "Kimi 49 元", desc: "群消息核查 + 标的快评" },
+      { name: "i 问财至尊版", desc: "白马股筛选 + 估值分位" }
+    ],
+    strategy: "听消息 ≠ 不动脑——每条消息先核查「数据 + 利益声明」再决定仓位。"
+  },
+  "VLFC": {
+    name: "佛系定投党",
+    portrait: "听群里 / 大 V 推荐的白马 ETF 长期定投，是消息驱动型长期主义者。",
+    traits: ["70% 仓位在 ETF", "平均持仓 ≥ 2 年", "听消息但只买白马"],
+    tools: [
+      { name: "东方财富 APP", desc: "看 ETF 行情 + 净值走势" },
+      { name: "通义千问免费版", desc: "问行业前景 + 主题分析" },
+      { name: "i 问财基础版", desc: "筛白马 ETF + 低估值标的" }
+    ],
+    strategy: "ETF 不是「买了就忘」——每半年做一次再平衡。"
+  },
+  "VSIA": {
+    name: "价值猎手",
+    portrait: "把「低估值 + 短期催化」结合，等不到价值兑现就走，是机构研究员思维。",
+    traits: ["平均持仓 1-3 个月", "单票仓位 20-30%", "财报 + 技术面都看"],
+    tools: [
+      { name: "Kimi 49 元", desc: "速读财报 + 提取关键科目" },
+      { name: "i 问财至尊版", desc: "条件预警 + 估值分位筛选" },
+      { name: "BigQuant", desc: "回测信号 + 量化验证" }
+    ],
+    strategy: "价值 + 短期不是矛盾——但设好止损线（-8% 必须出）。"
+  },
+  "VSIC": {
+    name: "价值波段客",
+    portrait: "基本面研究 + 独立判断 + 短线波段 + 严守仓位，不追高不重仓。",
+    traits: ["平均持仓 2-3 个月", "单票仓位 10-15%", "PE 历史分位是核心"],
+    tools: [
+      { name: "i 问财至尊版", desc: "PE 分位筛选 + 条件预警" },
+      { name: "Kimi 49 元", desc: "读财报 + 财务健康度" },
+      { name: "飞书多维表格", desc: "跟踪估值变化 + 自建规则" }
+    ],
+    strategy: "PE 分位 < 30% 才买，> 70% 就出——纪律 > 感觉。"
+  },
+  "VSFA": {
+    name: "价值投机客",
+    portrait: "信群消息 + 短期博弈 + 价值选股但节奏快，是激进型消息散户。",
+    traits: ["平均持仓 2-4 周", "一年交易 30-50 次", "听消息但只买白马"],
+    tools: [
+      { name: "Kimi 49 元", desc: "5 分钟速读 200 页研报" },
+      { name: "i 问财至尊版", desc: "核查研报数据 + 多源验证" },
+      { name: "通义千问", desc: "识别伪研报 + 利益声明核查" }
+    ],
+    strategy: "跟消息也要先核查——任何研报都要先看「数据 + 利益声明」再跟。"
+  },
+  "VSFC": {
+    name: "保守价值派",
+    portrait: "听群消息选白马 + 短线 + 严守仓位，AI 帮我盯盘、帮我出。",
+    traits: ["平均持仓 2-3 个月", "单票仓位 ≤ 10%", "止损线严格执行"],
+    tools: [
+      { name: "ChatGPT Plus", desc: "写交易计划 + 拆解研究框架" },
+      { name: "i 问财至尊版", desc: "条件预警 + 实时信号" },
+      { name: "通义千问 Pro", desc: "自动生成复盘报告" }
+    ],
+    strategy: "研究 + 纪律 = 不亏大钱——把「AI 当纪律员」是这型的核心。"
+  },
+  "MLIA": {
+    name: "题材龙头捕手",
+    portrait: "死磕一条赛道 3-5 年，重仓龙头股，新能源老炮的标准画像。",
+    traits: ["持仓 ≥ 2 年", "单赛道 ≥ 50% 仓位", "至少跟踪 10 个产业链公司"],
+    tools: [
+      { name: "Wind 个人基础版", desc: "产业链数据 + 上下游梳理" },
+      { name: "Kimi 49 元", desc: "行业研究 + 赛道分析" },
+      { name: "i 问财至尊版", desc: "赛道筛选 + 龙头识别" }
+    ],
+    strategy: "单赛道集中度 > 50% 是双刃剑——配 30% 防御仓位。"
+  },
+  "MLIC": {
+    name: "赛道慢牛派",
+    portrait: "看好赛道 + 独立研究 + 长线持有 + 仓位适中，是稳健型题材玩家。",
+    traits: ["持仓 1-2 年", "单赛道 30-50% 仓位", "自己研究产业链"],
+    tools: [
+      { name: "Wind 个人基础版", desc: "赛道景气度数据" },
+      { name: "i 问财至尊版", desc: "赛道筛选 + 条件预警" },
+      { name: "Kimi 49 元", desc: "行业研究 + 产业链分析" }
+    ],
+    strategy: "赛道景气度跟踪是核心——但要警惕「单赛道集中度过高」。"
+  },
+  "MLFA": {
+    name: "群消息赛道党",
+    portrait: "听群消息选赛道 + 重仓龙头 + 长期持有，是消息驱动型赛道玩家。",
+    traits: ["持仓 ≥ 2 年", "单赛道 ≥ 50% 仓位", "听消息但做长线"],
+    tools: [
+      { name: "Wind 个人基础版", desc: "赛道景气度数据" },
+      { name: "Kimi 49 元", desc: "赛道前景核查" },
+      { name: "通义千问", desc: "群消息赛道真假识别" }
+    ],
+    strategy: "听消息做赛道——但要警惕「单赛道集中度 > 50%」的双刃剑效应。"
+  },
+  "MLFC": {
+    name: "佛系赛道党",
+    portrait: "听群里 / 大 V 推荐 + 买赛道 ETF + 长期持有，不折腾。",
+    traits: ["70% 仓位在赛道 ETF", "持仓 ≥ 2 年", "每年最多调 1 次仓位"],
+    tools: [
+      { name: "东方财富 APP", desc: "看 ETF 净值 + 持仓变化" },
+      { name: "通义千问免费版", desc: "问赛道前景 + 长期趋势" },
+      { name: "同花顺 i 问财基础版", desc: "ETF 筛选 + 主题对比" }
+    ],
+    strategy: "赛道 ETF 也是 ETF——警惕「行业主题 ETF 集中度过高」。"
+  },
+  "MSIA": {
+    name: "涨停敢死队",
+    portrait: "追涨停板、打板族，3 天不涨就换，是题材短线激进派的标准画像。",
+    traits: ["平均持仓 1-3 天", "一年交易 100+ 次", "单票仓位 30%+"],
+    tools: [
+      { name: "i 问财至尊版", desc: "涨停预警 + 题材识别" },
+      { name: "同花顺 APP", desc: "盘口数据 + 资金流向" },
+      { name: "通义千问", desc: "题材逻辑核查 + 概念验证" }
+    ],
+    strategy: "打板胜率 < 30% 的人长期必亏——先做半年回测再上真金。"
+  },
+  "MSIC": {
+    name: "题材波段手",
+    portrait: "题材派 + 独立判断 + 短线 + 仓位适中，是题材短线里的理性玩家。",
+    traits: ["平均持仓 3-7 天", "单票仓位 10-20%", "每月复盘 1 次"],
+    tools: [
+      { name: "i 问财至尊版", desc: "题材筛选 + 资金面分析" },
+      { name: "同花顺 APP", desc: "技术形态 + 量价信号" },
+      { name: "ChatGPT Plus", desc: "题材逻辑分析 + 复盘框架" }
+    ],
+    strategy: "题材短线操盘的核心不是「抓得快」，是「出得狠」——止损止盈不打折。"
+  },
+  "MSFA": {
+    name: "群消息小韭菜",
+    portrait: "群里说「今天要起飞」就满仓，群里说「割了」就清仓，听消息交易。",
+    traits: ["平均持仓 1-5 天", "一天可能交易 3 次", "90% 决策来自群消息"],
+    tools: [
+      { name: "通义千问免费版", desc: "核查消息真假 + 概念辨伪" },
+      { name: "通用 LLM", desc: "识别伪研报 + 利益链分析" },
+      { name: "巨潮资讯 APP", desc: "看原始公告 + 权威披露" }
+    ],
+    strategy: "听消息交易的人，99% 是被消息方赚的人——先学会「识别 3 类信号」。"
+  },
+  "MSFC": {
+    name: "题材纪律员",
+    portrait: "题材派 + 短线 + 听群消息 + 严守仓位，AI 帮我盯盘、帮我出，纪律 > 一切。",
+    traits: ["平均持仓 1-2 周", "止损止盈严格执行", "多工具组合按场景切换"],
+    tools: [
+      { name: "i 问财至尊版", desc: "题材预警 + 条件信号" },
+      { name: "同花顺 APP", desc: "盘口数据 + 实时盯盘" },
+      { name: "ChatGPT Plus", desc: "逻辑分析 + 交易计划" }
+    ],
+    strategy: "用 AI 把规则变成「自动执行」才是这型的护城河。"
+  }
+};
+
+/* ===================== 工具函数 ===================== */
+function base62Hash(input) {
+  // 简单稳定 hash：字符串 → base62 4 位
+  let h1 = 0x811c9dc5, h2 = 0xdeadbeef;
+  for (let i = 0; i < input.length; i++) {
+    const c = input.charCodeAt(i);
+    h1 = Math.imul(h1 ^ c, 0x01000193) >>> 0;
+    h2 = Math.imul(h2 ^ c, 0x85ebca6b) >>> 0;
+  }
+  const combined = (BigInt(h1) << 32n) | BigInt(h2);
+  const alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let result = "";
+  let n = combined;
+  for (let i = 0; i < 4; i++) {
+    result = alphabet[Number(n % 62n)] + result;
+    n = n / 62n;
+  }
+  return result;
+}
+
+function generateShareCode(personalityCode, timestamp) {
+  const hash = base62Hash(personalityCode + "-" + timestamp);
+  return personalityCode + "-" + hash;
+}
+
+function showToast(msg) {
+  const t = document.createElement("div");
+  t.className = "toast";
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2000);
+}
+
+/* ===================== 评分逻辑 ===================== */
+const DIMENSIONS = ["V", "L", "I", "A"]; // 正极
+const OPPOSITES = { V: "M", L: "S", I: "F", A: "C" };
+const NAMES = {
+    V: "价值", M: "题材",
+    L: "长线", S: "短线",
+    I: "独立", F: "跟风",
+    A: "激进", C: "保守"
+};
+const NAMES_EN = {
+    V: "Value", M: "Market",
+    L: "Long-term", S: "Short-term",
+    I: "Independent", F: "Follow",
+    A: "Aggressive", C: "Conservative"
+};
+
+function computeResult(answers) {
+  // answers: Array<"A"|"B"|"C"|"D"> 长度 = 20
+  const scores = { V: 0, M: 0, L: 0, S: 0, I: 0, F: 0, A: 0, C: 0 };
+  for (let i = 0; i < answers.length; i++) {
+    const opt = QUESTIONS[i].opts.find(o => o.label === answers[i]);
+    if (!opt) continue;
+    for (const k in opt.score) scores[k] += opt.score[k];
+  }
+  // 4 维拼字母：正极 vs 负极，分高者胜
+  let code = "";
+  for (const dim of DIMENSIONS) {
+    const opp = OPPOSITES[dim];
+    code += scores[dim] >= scores[opp] ? dim : opp;
+  }
+  return { code, scores };
+}
+
+/* ===================== 4 维雷达图 ===================== */
+function drawRadar(scores) {
+  const svg = document.getElementById("radarSvg");
+  if (!svg) return;
+  const cx = 120, cy = 100, R = 80;
+  const dims = ["V", "L", "I", "A"];
+  // 雷达 4 维
+  const angle = (i) => -Math.PI / 2 + (Math.PI * 2 * i) / 4;
+  // 背景网格
+  let svgContent = "";
+  for (let r = 1; r <= 4; r++) {
+    const pts = dims.map((_, i) => {
+      const x = cx + Math.cos(angle(i)) * R * r / 4;
+      const y = cy + Math.sin(angle(i)) * R * r / 4;
+      return `${x},${y}`;
+    }).join(" ");
+    svgContent += `<polygon points="${pts}" fill="none" stroke="#e2e8f0" stroke-width="1"/>`;
+  }
+  // 轴
+  dims.forEach((d, i) => {
+    const x = cx + Math.cos(angle(i)) * R;
+    const y = cy + Math.sin(angle(i)) * R;
+    svgContent += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#cbd5e0" stroke-width="1"/>`;
+  });
+  // 数据多边形（取 max(5) 归一化到 0-1）
+  const maxScore = 5;
+  const dataPts = dims.map((d, i) => {
+    const v = Math.max(scores[d], scores[OPPOSITES[d]]);
+    const ratio = Math.min(v / maxScore, 1);
+    const x = cx + Math.cos(angle(i)) * R * ratio;
+    const y = cy + Math.sin(angle(i)) * R * ratio;
+    return `${x},${y}`;
+  }).join(" ");
+  svgContent += `<polygon points="${dataPts}" fill="rgba(246, 211, 101, 0.4)" stroke="#f6d365" stroke-width="2"/>`;
+  // 圆点
+  dims.forEach((d, i) => {
+    const v = Math.max(scores[d], scores[OPPOSITES[d]]);
+    const ratio = Math.min(v / maxScore, 1);
+    const x = cx + Math.cos(angle(i)) * R * ratio;
+    const y = cy + Math.sin(angle(i)) * R * ratio;
+    svgContent += `<circle cx="${x}" cy="${y}" r="3" fill="#764ba2"/>`;
+  });
+  // 标签
+  dims.forEach((d, i) => {
+    const winner = scores[d] >= scores[OPPOSITES[d]] ? d : OPPOSITES[d];
+    const x = cx + Math.cos(angle(i)) * (R + 16);
+    const y = cy + Math.sin(angle(i)) * (R + 16);
+    svgContent += `<text x="${x}" y="${y - 6}" text-anchor="middle" dominant-baseline="middle" font-size="13" font-weight="700" fill="#2d3748">${NAMES[winner]}</text>`;
+    svgContent += `<text x="${x}" y="${y + 9}" text-anchor="middle" font-size="9" fill="#718096" style="font-family:Inter,-apple-system,sans-serif;">${NAMES_EN[winner]}</text>`;
+  });
+  svg.innerHTML = svgContent;
+}
+
+/* ===================== 状态机 ===================== */
+let state = {
+  page: "welcome",
+  qIndex: 0,
+  answers: new Array(20).fill(null)
+};
+
+function showPage(name) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("page" + name.charAt(0).toUpperCase() + name.slice(1)).classList.add("active");
+  // Header 隐藏
+  document.getElementById("appHeader").style.display = (name === "welcome" || name === "result") ? "block" : "none";
+  state.page = name;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+
+// 启动时检查 URL ?code= 是否携带分享者结果
+function tryLoadFromUrl() {
+  const code = new URLSearchParams(location.search).get("code");
+  if (!code) return false;
+  const p = PERSONALITIES[code];
+  if (!p) return false;
+  const stored = { ...p, shareCode: code, scores: p._scores || { V: 3, M: 1, L: 2, S: 2, I: 3, C: 1, A: 2, F: 2 }, isShared: true };
+  renderResult(stored);
+  showPage("result");
+  return true;
+}
+
+function startTest() {
+  state.qIndex = 0;
+  state.answers = new Array(20).fill(null);
+  showPage("question");
+  renderQuestion();
+}
+
+function retakeTest() {
+  if (confirm("确定要重新测试吗？将清空你之前的结果。")) {
+    localStorage.removeItem("gutou_result_16");
+    startTest();
+  }
+}
+
+function viewLastResult() {
+  const stored = JSON.parse(localStorage.getItem("gutou_result_16") || "null");
+  if (!stored) return;
+  renderResult(stored);
+  showPage("result");
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[state.qIndex];
+  document.getElementById("questionText").textContent = (state.qIndex + 1) + ". " + q.text;
+  document.getElementById("progressText").textContent = `第 ${state.qIndex + 1} / ${QUESTIONS.length} 题`;
+  document.getElementById("progressBar").style.width = ((state.qIndex + 1) / QUESTIONS.length * 100) + "%";
+
+  const optsBox = document.getElementById("optionsBox");
+  optsBox.innerHTML = "";
+  q.opts.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.className = "option";
+    if (state.answers[state.qIndex] === opt.label) btn.classList.add("selected");
+    btn.innerHTML = `<span class="opt-label">${opt.label}</span>${opt.text}`;
+    btn.onclick = () => {
+      state.answers[state.qIndex] = opt.label;
+      renderQuestion();
+    };
+    optsBox.appendChild(btn);
+  });
+
+  document.getElementById("btnPrev").disabled = state.qIndex === 0;
+  document.getElementById("btnNext").disabled = !state.answers[state.qIndex];
+  document.getElementById("btnNext").textContent = (state.qIndex === QUESTIONS.length - 1) ? "看结果" : "下一题";
+}
+
+function prevQuestion() {
+  if (state.qIndex > 0) {
+    state.qIndex--;
+    renderQuestion();
+  }
+}
+
+function nextQuestion() {
+  if (!state.answers[state.qIndex]) return;
+  if (state.qIndex < QUESTIONS.length - 1) {
+    state.qIndex++;
+    renderQuestion();
+  } else {
+    submitTest();
+  }
+}
+
+function submitTest() {
+  const { code, scores } = computeResult(state.answers);
+  const p = PERSONALITIES[code];
+  if (!p) {
+    alert("出错了：未找到 " + code + " 人格数据");
+    return;
+  }
+  const timestamp = Date.now();
+  const shareCode = generateShareCode(code, timestamp);
+  const result = {
+    type: "16type",
+    code, name: p.name, portrait: p.portrait,
+    traits: p.traits, tools: p.tools, strategy: p.strategy,
+    scores, shareCode, hash: shareCode.split("-")[1],
+    answers: state.answers.slice(),
+    timestamp, version: "v1"
+  };
+  localStorage.setItem("gutou_result_16", JSON.stringify(result));
+  renderResult(result);
+  showPage("result");
+}
+
+function renderResult(r) {
+  window._lastResult = r;
+
+  document.getElementById("rCode").textContent = r.code;
+  document.getElementById("rName").textContent = r.name;
+  document.getElementById("rPortrait").textContent = r.portrait;
+  // 特征
+  const traitsUl = document.getElementById("rTraits");
+  traitsUl.innerHTML = "";
+  r.traits.forEach(t => {
+    const li = document.createElement("li");
+    li.textContent = t;
+    traitsUl.appendChild(li);
+  });
+  // 工具
+  const toolsBox = document.getElementById("rTools");
+  toolsBox.innerHTML = "";
+  r.tools.forEach(t => {
+    const div = document.createElement("div");
+    div.className = "tool-card";
+    const initial = t.name.charAt(0);
+    div.innerHTML = `<div class="icon">${initial}</div><div class="body"><div class="name">${t.name}</div><div class="desc">${t.desc}</div></div>`;
+    toolsBox.appendChild(div);
+  });
+  // 策略
+  document.getElementById("rStrategy").innerHTML = `<span class="label">⚡ 策略提醒：</span>${r.strategy}`;
+  // 分享码
+  document.getElementById("shareCode").textContent = r.shareCode;
+  // 雷达图
+  drawRadar(r.scores);
+}
+
+/* ===================== 分享 + 海报 ===================== */
+function copyShareLink() {
+  const stored = JSON.parse(localStorage.getItem("gutou_result_16") || "null");
+  if (!stored) { showToast("请先完成测试"); return; }
+  const url = location.origin + location.pathname + "?code=" + stored.code;
+  const txt = `我测出来是「${stored.name}」（${stored.code}）——\n${stored.portrait}\n\n你是哪种"股格"？5 分钟测一测：\n${url}\n\n#股格测试 #投资人格 #散户自测`;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(txt).then(
+      () => showToast("✓ 已复制到剪贴板，去粘贴给朋友吧"),
+      () => fallbackCopy(txt)
+    );
+  } else {
+    fallbackCopy(txt);
+  }
+}
+
+function fallbackCopy(txt) {
+  const ta = document.createElement("textarea");
+  ta.value = txt;
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand("copy"); showToast("✓ 已复制到剪贴板"); }
+  catch (e) { showToast("复制失败，请手动复制"); }
+  document.body.removeChild(ta);
+}
+
+function generatePoster() {
+  const stored = JSON.parse(localStorage.getItem("gutou_result_16") || "null");
+  if (!stored) { showToast("请先完成测试"); return; }
+  if (typeof html2canvas === "undefined") { showToast("海报组件未加载，请检查网络"); return; }
+
+  // 构建海报 DOM
+  const container = document.getElementById("posterContainer");
+  container.innerHTML = `
+    <div class="poster" id="posterEl">
+      <div>
+        <div class="p-top">股格测试 (GGTI) · 16 型人格</div>
+        <div class="p-avatar">💎</div>
+        <div class="p-title">我的人格是</div>
+      </div>
+      <div>
+        <div class="p-code">${stored.code}</div>
+        <div class="p-name">${stored.name}</div>
+        <div class="p-portrait">${stored.portrait}</div>
+      </div>
+      <div>
+        <div class="p-tools">
+          ${stored.tools.map(t => `<div class="p-tool">🔧 ${t.name}</div>`).join("")}
+        </div>
+        <div class="p-hash">${stored.shareCode}</div>
+        <div class="p-foot">扫码关注「股格测试 (GGTI)」看看你的投资人格</div>
+        <div class="p-disclaimer">⚠ 本测试为教育 / 娱乐用途，不构成投资建议</div>
+      </div>
+    </div>
+  `;
+  showToast("正在生成海报…");
+  html2canvas(document.getElementById("posterEl"), { backgroundColor: null, scale: 1, logging: false }).then(canvas => {
+    const link = document.createElement("a");
+    link.download = "股格_" + stored.code + "_" + stored.hash + ".png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+    container.innerHTML = "";
+    showToast("✓ 海报已下载");
+  }).catch(err => {
+    container.innerHTML = "";
+    showToast("生成失败：" + err.message);
+  });
+}
+
+/* ===================== 启动：检查是否已有结果 ===================== */
+function initLastResult() {
+  const stored = JSON.parse(localStorage.getItem("gutou_result_16") || "null");
+  if (stored) {
+    const lr = document.getElementById("lastResult");
+    lr.style.display = "block";
+    document.getElementById("lastCode").textContent = stored.code;
+    document.getElementById("lastName").textContent = stored.name;
+    const t = new Date(stored.timestamp);
+    document.getElementById("lastTime").textContent = "测试时间：" + t.toLocaleString("zh-CN");
+  }
+}
+
+initLastResult();
+</script>
+</body>
+</html>
